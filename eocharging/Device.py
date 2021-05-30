@@ -54,25 +54,6 @@ class Device:
         if response.status_code != 200:
             raise Exception("Response was not OK")
 
-    # Consider moving these to the LiveSession class
-    def pause(self):
-        """Used for pausing a session
-        Similar to disabling/locking but also not"""
-        url = base_url + "api/session/pause"
-        payload = {"id": self.device_address}
-        response = requests.post(url, data=payload, headers=self.headers)
-        if response.status_code != 200:
-            raise Exception("Response was not OK")
-
-    def unpause(self):
-        """Used for unpausing a paused session
-        Similar to enabling/unlocking but also not"""
-        url = base_url + "api/session/unpause"
-        payload = {"id": self.device_address}
-        response = requests.post(url, data=payload, headers=self.headers)
-        if response.status_code != 200:
-            raise Exception("Response was not OK")
-
     def get_sessions(self, start=None, end=None):
         """Get history of charging sessions the device has performed
         If no start or end timestamps (epoch) are provided then this will return all sessions"""
