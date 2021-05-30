@@ -1,8 +1,11 @@
 import requests
 from datetime import datetime, timedelta
 import time
+from requests.api import head
+
+from requests.models import Response
 from eocharging.Helpers import eo_base_url as base_url
-from eocharging.ChargingData import Session
+from eocharging.ChargingData import Session, LiveSession
 
 
 class Device:
@@ -84,3 +87,11 @@ class Device:
             )
 
         return sessions
+    
+    def get_live_session(self):
+        url = base_url + 'api/session/alive'
+        response = requests.get(url, headers=self.headers)
+        if response.status_code != 200:
+            return None
+        else:
+            return LiveSession(access_token=self.access_token)
