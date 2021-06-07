@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="pyEOCharging",
     packages=find_packages(include=["eocharging"]),
-    version="0.0.3",
+    version="0.0.4",
     description="EO Smart Charger Library",
     long_description=long_description,
     long_description_content_type="text/markdown",
