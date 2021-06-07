@@ -1,5 +1,6 @@
 from eocharging.Helpers import eo_base_url as base_url
 import requests
+import time
 
 
 class Session:
@@ -45,6 +46,7 @@ class LiveSession:
     def __init__(self, access_token=None):
         if access_token is None:
             raise Exception("No access_token provided")
+        self.access_token = access_token
         
         url = base_url + "api/session"
         headers = {"Authorization": "Bearer " + access_token}
@@ -53,15 +55,19 @@ class LiveSession:
         if response.status_code != 200:
             raise Exception("Response was not OK")
         
-        #I don't know the structure of this data until I next charge a car; so this is TODO
         data = response.json()
+        
+        self.session_start_time = data['PiTime']
+        self.voltage = data['Voltage']
+        self.cpid = data['CPID']
+
+        self.update()
     
     def pause(self):
         """Used for pausing a session
         Similar to disabling/locking but also not"""
         url = base_url + "api/session/pause"
-        payload = {"id": self.device_address}
-        response = requests.post(url, data=payload, headers=self.headers)
+        response = requests.post(url,headers=self.headers)
         if response.status_code != 200:
             raise Exception("Response was not OK")
 
@@ -69,7 +75,29 @@ class LiveSession:
         """Used for unpausing a paused session
         Similar to enabling/unlocking but also not"""
         url = base_url + "api/session/unpause"
-        payload = {"id": self.device_address}
-        response = requests.post(url, data=payload, headers=self.headers)
+        response = requests.post(url, headers=self.headers)
         if response.status_code != 200:
             raise Exception("Response was not OK")
+    
+    def update(self):
+        #Get current charging rate
+        url = base_url + "api/session/detail"
+        payload = {
+            "id": self.cpid,
+            "startDate": self.session_start_time,
+            "endDate": int(time.time()),
+        }
+        headers = {"Authorization": "Bearer " + self.access_token}
+
+        live_data = requests.post(url, data=payload, headers=headers)
+        live_data = live_data.json()
+
+        self.current_amps = live_data[-1]['CT2']/1000
+        self.current_wattage = self.current_amps * self.voltage
+        
+        self.session_kwh = 0
+        self.session_cost = 0
+        for point in live_data:
+            kwh = ((point["CT2"] / 1000) * 230) / 1000 / 60
+            self.session_kwh += kwh
+            self.session_cost += kwh * point["Cost"]
