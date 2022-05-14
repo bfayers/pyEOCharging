@@ -5,6 +5,7 @@ import time
 
 class Session:
     """Class that defines what a Session is"""
+
     def __init__(self, access_token=None, cpid=None, start_date=None, end_date=None):
         if access_token is None:
             raise Exception("No access_token provided")
@@ -42,32 +43,33 @@ class Session:
             self.session_kwh += kwh
             self.session_cost += kwh * point["Cost"]
 
+
 class LiveSession:
     def __init__(self, access_token=None):
         if access_token is None:
             raise Exception("No access_token provided")
         self.access_token = access_token
-        
+
         url = base_url + "api/session"
         headers = {"Authorization": "Bearer " + access_token}
 
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
             raise Exception("Response was not OK")
-        
+
         data = response.json()
-        
-        self.session_start_time = data['PiTime']
-        self.voltage = data['Voltage']
-        self.cpid = data['CPID']
+
+        self.session_start_time = data["PiTime"]
+        self.voltage = data["Voltage"]
+        self.cpid = data["CPID"]
 
         self.update()
-    
+
     def pause(self):
         """Used for pausing a session
         Similar to disabling/locking but also not"""
         url = base_url + "api/session/pause"
-        response = requests.post(url,headers=self.headers)
+        response = requests.post(url, headers=self.headers)
         if response.status_code != 200:
             raise Exception("Response was not OK")
 
@@ -78,9 +80,9 @@ class LiveSession:
         response = requests.post(url, headers=self.headers)
         if response.status_code != 200:
             raise Exception("Response was not OK")
-    
+
     def update(self):
-        #Get current charging rate
+        # Get current charging rate
         url = base_url + "api/session/detail"
         payload = {
             "id": self.cpid,
@@ -92,9 +94,9 @@ class LiveSession:
         live_data = requests.post(url, data=payload, headers=headers)
         live_data = live_data.json()
 
-        self.current_amps = live_data[-1]['CT2']/1000
+        self.current_amps = live_data[-1]["CT2"] / 1000
         self.current_wattage = self.current_amps * self.voltage
-        
+
         self.session_kwh = 0
         self.session_cost = 0
         for point in live_data:

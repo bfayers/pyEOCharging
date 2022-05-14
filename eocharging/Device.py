@@ -87,9 +87,9 @@ class Device:
             )
 
         return sessions
-    
+
     def get_live_session(self):
-        url = base_url + 'api/session/alive'
+        url = base_url + "api/session/alive"
         response = requests.get(url, headers=self.headers)
         if response.status_code != 200:
             return None
