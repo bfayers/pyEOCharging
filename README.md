@@ -4,8 +4,6 @@ Python Library For interacting with EO Home EV Chargers.
 
 This has only been tested with a EO Mini Pro 2.
 
-Forked by MuddyRock from @bfayers original work.
-I am using this to teach myself Python - constructive feedback on my coding and just how bad it is, is welcome, but please be gentle!
 
 Example usage:
 
