@@ -37,6 +37,6 @@ class Manager:
         devices = []
         for device in data:
             devices.append(
-                Device(device_address=device["address"], access_token=self.access_token)
+                Device(device_address=device["address"], is_disabled=device["isDisabled"], hub_serial=device["hubSerial"], access_token=self.access_token)
             )
         return devices
