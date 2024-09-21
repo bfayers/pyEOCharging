@@ -10,25 +10,46 @@ from eocharging.Helpers import eo_base_url as base_url
 
 
 class chargeOpts:
-    def __init__(self,cpid=None, scheduleWDay=None,scheduleWEnd=None,tariffWDay=None,tariffWEnd=None,appSchedWDay=None,appSchedWEnd=None,solarMin=None,timeMode=None,solarMode=None,opMode=None,pricePeak=None,priceOffPeak=None,tnid=None,tariffZone=None):
+    def __init__(
+        self,
+        cpid=None,
+        scheduleWDay=None,
+        scheduleWEnd=None,
+        tariffWDay=None,
+        tariffWEnd=None,
+        appSchedWDay=None,
+        appSchedWEnd=None,
+        solarMin=None,
+        timeMode=None,
+        solarMode=None,
+        opMode=None,
+        pricePeak=None,
+        priceOffPeak=None,
+        tnid=None,
+        tariffZone=None,
+    ):
         if cpid is None:
             raise Exception("No cpid provided")
-        if scheduleWDay is None and\
-           scheduleWEnd is None and\
-           tariffWDay is None and\
-           tariffWEnd is None and\
-           appSchedWDay is None and\
-           appSchedWEnd is None and\
-           solarMin is None and\
-           timeMode is None and\
-           solarMode is None and\
-           opMode is None and\
-           pricePeak is None and\
-           priceOffPeak is None and\
-           tnid is None and\
-           tariffZone is None:
-           raise Exception("Must provide at least one of scheduleWDay, scheduleWEnd, tariffWDay, tariffWEnd, appSchedWDay, appSchedWEnd, solarMin, timeMode, solarMode, opMode, pricePeak, priceOffPeak, tnid, or tariffZone")
-                
+        if (
+            scheduleWDay is None
+            and scheduleWEnd is None
+            and tariffWDay is None
+            and tariffWEnd is None
+            and appSchedWDay is None
+            and appSchedWEnd is None
+            and solarMin is None
+            and timeMode is None
+            and solarMode is None
+            and opMode is None
+            and pricePeak is None
+            and priceOffPeak is None
+            and tnid is None
+            and tariffZone is None
+        ):
+            raise Exception(
+                "Must provide at least one of scheduleWDay, scheduleWEnd, tariffWDay, tariffWEnd, appSchedWDay, appSchedWEnd, solarMin, timeMode, solarMode, opMode, pricePeak, priceOffPeak, tnid, or tariffZone"
+            )
+
         self.cpid = cpid
         self.scheduleWDay = scheduleWDay
         self.scheduleWEnd = scheduleWEnd
@@ -44,7 +65,6 @@ class chargeOpts:
         self.priceOffPeak = priceOffPeak
         self.tnid = tnid
         self.tariffZone = tariffZone
-
 
 
 class Device:
@@ -90,27 +110,27 @@ class Device:
             raise Exception("Response was not OK")
         else:
             data = response.json()
-            data = data['chargeOpts']
+            data = data["chargeOpts"]
             chargeOpt = chargeOpts(
-                cpid=data['cpid'],
-                scheduleWDay=data['scheduleWDay'],
-                scheduleWEnd=data['scheduleWEnd'],
-                tariffWDay=data['tariffWDay'],
-                tariffWEnd=data['tariffWEnd'],
-                appSchedWDay=data['appSchedWDay'],
-                appSchedWEnd=data['appSchedWEnd'],
-                solarMin=data['solarMin'],
-                timeMode=data['timeMode'],
-                solarMode=data['solarMode'],
-                opMode=data['opMode'],
-                pricePeak=data['pricePeak'],
-                priceOffPeak=data['priceOffPeak'],
-                tnid=data['tnid'],
-                tariffZone=data['tariffZone']
+                cpid=data["cpid"],
+                scheduleWDay=data["scheduleWDay"],
+                scheduleWEnd=data["scheduleWEnd"],
+                tariffWDay=data["tariffWDay"],
+                tariffWEnd=data["tariffWEnd"],
+                appSchedWDay=data["appSchedWDay"],
+                appSchedWEnd=data["appSchedWEnd"],
+                solarMin=data["solarMin"],
+                timeMode=data["timeMode"],
+                solarMode=data["solarMode"],
+                opMode=data["opMode"],
+                pricePeak=data["pricePeak"],
+                priceOffPeak=data["priceOffPeak"],
+                tnid=data["tnid"],
+                tariffZone=data["tariffZone"],
             )
             return chargeOpt
 
-    def set_chargeOpts(self, opts: chargeOpts=None):
+    def set_chargeOpts(self, opts: chargeOpts = None):
 
         if opts is None:
             raise Exception("Must provide options to set")
@@ -122,38 +142,37 @@ class Device:
         if opts.scheduleWDay is not None:
             payload["scheduleWDay"] = opts.scheduleWDay
         if opts.scheduleWEnd is not None:
-            payload['scheduleWEnd'] = opts.scheduleWEnd
+            payload["scheduleWEnd"] = opts.scheduleWEnd
         if opts.tariffWDay is not None:
-            payload['tariffWDay'] = opts.tariffWDay
+            payload["tariffWDay"] = opts.tariffWDay
         if opts.tariffWEnd is not None:
-            payload['tariffWEnd'] = opts.tariffWEnd
+            payload["tariffWEnd"] = opts.tariffWEnd
         if opts.appSchedWDay is not None:
-            payload['appSchedWDay'] = opts.appSchedWDay
+            payload["appSchedWDay"] = opts.appSchedWDay
         if opts.appSchedWEnd is not None:
-            payload['appSchedWEnd'] = opts.appSchedWEnd
+            payload["appSchedWEnd"] = opts.appSchedWEnd
         if opts.solarMin is not None:
-            payload['solarMin'] = opts.solarMin
+            payload["solarMin"] = opts.solarMin
         if opts.timeMode is not None:
-            payload['timeMode'] = opts.timeMode
+            payload["timeMode"] = opts.timeMode
         if opts.solarMode is not None:
-            payload['solarMode'] = opts.solarMode
+            payload["solarMode"] = opts.solarMode
         if opts.opMode is not None:
-            payload['opMode'] = opts.opMode
+            payload["opMode"] = opts.opMode
         if opts.pricePeak is not None:
-            payload['pricePeak'] = opts.pricePeak
+            payload["pricePeak"] = opts.pricePeak
         if opts.priceOffPeak is not None:
-            payload['priceOffPeak'] = opts.priceOffPeak
+            payload["priceOffPeak"] = opts.priceOffPeak
         if opts.tnid is not None:
-            payload['tnid'] = opts.tnid
+            payload["tnid"] = opts.tnid
         if opts.tariffZone is not None:
-            payload['tariffZone'] = opts.tariffZone           
+            payload["tariffZone"] = opts.tariffZone
 
         response = requests.post(url, headers=self.headers, data=payload)
         if response.status_code != 200:
             raise Exception("Response was not OK")
         else:
             return self.get_chargeOpts()
-
 
     def enable(self):
         """Used for enabling a disabled charger, also known as unlocking"""
@@ -173,14 +192,15 @@ class Device:
 
     def get_sessions(self, start=None, end=None):
         """Get history of charging sessions the device has performed
-        If no start or end timestamps (epoch) are provided then this will return all sessions"""
+        If no start or end timestamps (epoch) are provided then this will return all sessions
+        """
         payload = {}
         if start is not None:
             payload["startDate"] = start
         if end is not None:
             payload["endDate"] = end
 
-        if "start" not in payload.keys():
+        if "startDate" not in payload.keys():
             payload = {"startDate": 0, "endDate": int(time.time())}
 
         url = base_url + "api/session/history"
